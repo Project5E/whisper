@@ -25,8 +25,8 @@ open class HOTP constructor(keySource: ByteArray, val digits: Int = 4, val algor
         return buffer.result(offset)
     }
     fun apply(counter: Int): Int = apply(counter.toLong())
-    fun applyToString(counter: Int): String = apply(counter).toString(digits)
-    fun applyToString(counter: Long): String = apply(counter).toString(digits)
+    fun applyToString(counter: Int): String = apply(counter).toFixString(digits)
+    fun applyToString(counter: Long): String = apply(counter).toFixString(digits)
 
     private fun ByteArray.result(offset: Int): Int {
         val intVal = this.sliceArray(offset until offset + 4).toInt()
@@ -37,6 +37,6 @@ open class HOTP constructor(keySource: ByteArray, val digits: Int = 4, val algor
     companion object {
         const val MAC_ALGORITHM = "HmacSHA256"
 
-        private fun Number.toString(digits: Int) = toString().padStart(digits, '0')
+        internal fun Number.toFixString(digits: Int) = toString().padStart(digits, '0')
     }
 }

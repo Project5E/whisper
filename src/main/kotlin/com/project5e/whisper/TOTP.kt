@@ -13,15 +13,15 @@ open class TOTP(keySource: ByteArray,
         val counter = Duration.between(epoch, instant).seconds / step
         return apply(counter)
     }
-    fun getString(instant: Instant): String = get(instant).toString(digits)
+    fun getString(instant: Instant): String = get(instant).toFixString(digits)
 
     fun now(): Int = get(Instant.now())
     fun prev(): Int = get(Instant.now().minusSeconds(step.toLong()))
     fun next(): Int = get(Instant.now().plusSeconds(step.toLong()))
 
-    fun nowString(): String = now().toString(digits)
-    fun prevString(): String = prev().toString(digits)
-    fun nextString(): String = next().toString(digits)
+    fun nowString(): String = now().toFixString(digits)
+    fun prevString(): String = prev().toFixString(digits)
+    fun nextString(): String = next().toFixString(digits)
 
     fun validate(challenge: String): Boolean {
         List(3) {
