@@ -6,7 +6,7 @@ import java.time.Instant
 open class TOTP(keySource: ByteArray,
                 val epoch: Instant = Instant.EPOCH,
                 val step: Int = 30,
-                digits: Int = 6,
+                digits: Int = 4,
                 algorithm: String = MAC_ALGORITHM) : HOTP(keySource, digits, algorithm) {
 
     fun get(instant: Instant): Int {
