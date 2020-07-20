@@ -1,6 +1,7 @@
 package com.project5e.whisper
 
 import java.nio.ByteBuffer
+import java.security.MessageDigest
 import java.util.*
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
@@ -9,6 +10,7 @@ import kotlin.math.pow
 private val b62 = Base62.createInstance()
 private val b64Enc = Base64.getEncoder()
 private val b64Dec = Base64.getDecoder()
+private val sha256 = MessageDigest.getInstance("SHA-256")
 
 infix fun Int.`**`(exponent: Int): Int = toDouble().pow(exponent).toInt()
 infix fun Byte.and(other: Int): Byte = (toInt() and other).toByte()
@@ -37,8 +39,13 @@ fun ByteArray.toInt(): Int {
 
 fun ByteArray.toBase62(): String = b62.encode(this)
 fun ByteArray.toBase64(): String = b64Enc.encodeToString(this)
+val ByteArray.hex: String
+  get() = joinToString("") { (it.toInt() and 0xFF).toString(16) }
+
 
 fun String.fromBase62(): ByteArray = b62.decode(this)
 fun String.fromBase64(): ByteArray = b64Dec.decode(this)
 
 fun ByteArray.toKey(algorithm: String): SecretKey = SecretKeySpec(this, algorithm)
+@Synchronized
+fun ByteArray.sha256() = sha256.digest(this)
