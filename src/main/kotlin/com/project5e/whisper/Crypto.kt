@@ -48,6 +48,24 @@ abstract class Crypto private constructor(internal val key: SecretKey) {
     @JvmStatic
     fun getAes128ECBHmacSHA1Instance(keySource: String): Crypto = Aes128ECBHmacSHA1(SecretKeySpec(base64Decoder.decode(keySource), Aes128ECBHmacSHA1.ALGORITHM))
 
+    @JvmStatic
+    fun getAes128GCMInstance(keySource: ByteArray): Crypto = Aes128GCM(SecretKeySpec(keySource, Aes128GCM.ALGORITHM))
+
+    @JvmStatic
+    fun getAes128ECBInstance(keySource: ByteArray): Crypto = Aes128ECB(SecretKeySpec(keySource, Aes128ECB.ALGORITHM))
+
+    @JvmStatic
+    fun getAes128ECBHmacSHA1Instance(keySource: ByteArray): Crypto = Aes128ECBHmacSHA1(SecretKeySpec(keySource, Aes128ECBHmacSHA1.ALGORITHM))
+
+    @JvmStatic
+    fun getAes128GCMInstance(key: SecretKey): Crypto = Aes128GCM(key)
+
+    @JvmStatic
+    fun getAes128ECBInstance(key: SecretKey): Crypto = Aes128ECB(key)
+
+    @JvmStatic
+    fun getAes128ECBHmacSHA1Instance(key: SecretKey): Crypto = Aes128ECBHmacSHA1(key)
+
     private class Aes128GCM(key: SecretKey, private val nonceLength: Int = 3, private val tagLength: Int = 96) : Crypto(key) {
       companion object {
         const val ALGORITHM: String = "AES"

@@ -1,5 +1,6 @@
 package com.project5e.whisper
 
+import java.nio.Buffer
 import java.nio.ByteBuffer
 import java.security.MessageDigest
 import java.util.*
@@ -26,7 +27,7 @@ fun Long.toBytes(): ByteArray {
 fun ByteArray.toLong(): Long {
   val buffer: ByteBuffer = ByteBuffer.allocate(java.lang.Long.BYTES)
   buffer.put(this)
-  buffer.flip() // need flip
+  (buffer as Buffer).flip() // need flip
   return buffer.long
 }
 
@@ -48,4 +49,4 @@ fun String.fromBase64(): ByteArray = b64Dec.decode(this)
 
 fun ByteArray.toKey(algorithm: String): SecretKey = SecretKeySpec(this, algorithm)
 @Synchronized
-fun ByteArray.sha256() = sha256.digest(this)
+fun ByteArray.sha256(): ByteArray = sha256.digest(this)
